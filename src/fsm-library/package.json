@@ -1,0 +1,24 @@
+{
+  "name": "fsm-library",
+  "version": "1.0.0",
+  "description": "A finite-state machine library for React",
+  "main": "MachineProvider.jsx",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "^17.0.2"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.5",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/jest-dom": "^5.16.1",
+    "jest": "^27.4.3",
+    "babel-jest": "^27.4.2",
+    "babel-core": "^7.0.0-bridge.0"
+  }
+}

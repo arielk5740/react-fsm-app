@@ -1,0 +1,70 @@
+#root {
+  max-width: 1280px;
+  padding: 2rem;
+}
+
+.status {
+  font-weight: bold;
+  margin: 0 50px;
+  padding: 35px;
+}
+
+.status-idle {
+  color: grey;
+}
+
+.status-loading {
+  color: orange;
+}
+
+.status-data {
+  color: green;
+}
+
+.status-error {
+  color: red;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.main {
+  display: flex;
+}
+
+.pokemon {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  display: inline-block;
+  background-color: dodgerblue;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: darkblue;
+}
+
+.clear-button {
+  margin-bottom: 10px;
+}
