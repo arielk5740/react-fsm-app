@@ -38,14 +38,12 @@ machine to manage the different states of this process including idle, loading, 
   development experience.
 - React: A JavaScript library for creating user interfaces.
 
-## FSM-Library Integration
+## FSM Library 
 
-The fsm-library provides three parts:
-
-* MachineProvider: This component wraps around components that will use the finite state machine.
-* useMachineContext: This hook is used in components that want to access the finite state machine's
-  state and transition method.
-* useFiniteStateMachine: The custom React hook implementing the finite state machine.
+All the constructs required to implement FSM in your React application are available from a single file `MachineProvider.jsx`:
+* `MachineProvider`: A React component that provides FSM capabilities to the components in the application where it is used. It can be used at the top level of application so the FSM settings are available to all the components in the application.
+* `useMachineContext`: A custom hook to consume machine context. It can be used in any functional component that requires knowledge of or needs to change the state of the machine.
+* `useFiniteStateMachine`: The core custom hook for warming up our machine. This hook takes a machine object and returns an array containing the current state of the machine and a function to transition the machine to the next state based on the action provided.
 
 ## Project structure
 The `src` folder contains:

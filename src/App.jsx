@@ -1,6 +1,5 @@
 import React from 'react';
-import MachineProvider from "./fsm-library/MachineProvider";
-import useMachineContext from "./fsm-library/useMachineContext";
+import {MachineProvider, useMachineContext}  from "./fsm-library/MachineProvider";
 
 const machine = {
     name: 'Pokemon Fetching',

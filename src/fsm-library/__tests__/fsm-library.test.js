@@ -1,8 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
-import MachineProvider from '../MachineProvider'
-import useMachineContext from '../useMachineContext'
+import React from 'react';
+import {fireEvent, render} from '@testing-library/react';
+import {MachineProvider, useMachineContext} from '../MachineProvider';
 
 const machineMock = {
     initialState: 'idle',
@@ -17,14 +16,9 @@ const machineMock = {
             transitions: {
                 RESOLVE: 'data'
             }
-        },
-        data: {
-            transitions: {
-                FETCH: 'loading'
-            }
         }
     }
-}
+};
 
 // eslint-disable-next-line no-undef
 test('provides the fsm through context', () => {
