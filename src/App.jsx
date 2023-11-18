@@ -31,6 +31,20 @@ const machine = {
     },
 };
 
+// eslint-disable-next-line no-undef
+if (process.env.NODE_ENV === 'test') {
+    window.fetch = () =>
+        Promise.resolve({
+            json: () => Promise.resolve({
+                results: [
+                    { name: "pokemon1", url: "https://pokeapi.co/api/v2/pokemon/1/" },
+                    { name: "pokemon2", url: "https://pokeapi.co/api/v2/pokemon/2/" }
+                ]
+            })
+        });
+}
+
+
 const PokemonComponent = () => {
     const [state, transition] = useMachineContext();
     const [data, setData] = React.useState([]);
