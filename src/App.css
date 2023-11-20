@@ -1,33 +1,68 @@
-#root {
-  max-width: 1280px;
-  padding: 2rem;
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.status {
-  font-weight: bold;
-  margin: 0 50px;
-  padding: 35px;
+.search-component {
+  flex: 3;
+  padding: 20px;
 }
 
-.status-idle {
-  color: grey;
+input {
+  padding: 10px;
+  width: 70%;
+  border: 1px solid #ddd;
+  margin: 10px 0;
 }
 
-.status-loading {
-  color: orange;
+button {
+  padding: 10px 20px;
+  border: none;
+  background: #5c7aff;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px 10px 10px 0;
+
+  &:hover {
+    background-color: #4158D0;
+  }
+
+  &.search-button {
+    margin: 0 10px;
+    background: #0099ff;
+  }
+
+  &.clear-button {
+    background: #ff1a1a;
+  }
 }
 
-.status-data {
-  color: green;
+p {
+  padding: 10px;
 }
 
-.status-error {
-  color: red;
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.clear-button {
+  display: block;
+  margin: 20px auto;
 }
 
 .loader {
   border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
+  border-top: 16px solid #0d8bf2;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -39,32 +74,57 @@
   100% { transform: rotate(360deg); }
 }
 
-.main {
-  display: flex;
-}
-
-.pokemon {
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-button {
-  display: inline-block;
-  background-color: dodgerblue;
-  color: white;
+.status {
+  position: fixed;
+  bottom: 0;
+  right: 0;
   padding: 10px 20px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
 }
 
-button:hover {
-  background-color: darkblue;
+.status-idle {
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.clear-button {
-  margin-bottom: 10px;
+.status-loading {
+  background: rgba(0, 0, 0, 0.4);
 }
+
+.status-show {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.status-error {
+  background: rgba(255, 0, 0, 0.7);
+}
+
+.state-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  z-index: 10;
+}
+
+.idle {
+  background: #9c9c9c;
+}
+
+.loading {
+  background: #f9ba2d;
+}
+
+.results {
+  background: #43db7f;
+}
+
+.show {
+  background: #43db7f;
+}
+
+.error {
+  background: #db4337;
+}
+

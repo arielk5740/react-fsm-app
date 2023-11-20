@@ -26,10 +26,9 @@ The finite state machine used in this library is an object structure which defin
 }
 ```
 
-## Overview
+# TV Show Tracker
 
-The application fetches a list of Pokemon from an API and displays it. It uses a finite state
-machine to manage the different states of this process including idle, loading, data and error states.
+This is a small application built with React that uses a finite state machine to manage application state. It uses the [TV Maze API](https://www.tvmaze.com/api) to allow users to search for TV shows and view detailed information about them.
 
 ## Libraries used
 
@@ -60,7 +59,7 @@ To run the application:
 2. Clone this repository.
 3. Navigate to the root directory of the cloned repository on your terminal.
 4. Run `npm install` to install all the necessary dependencies.
-5. Run `npm run dev` to start the development server.
+5. Run `vite` to start the development server.
 
 ## Testing the application
 

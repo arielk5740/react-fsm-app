@@ -1,30 +1,40 @@
-import React from 'react';
-import {MachineProvider, useMachineContext}  from "./fsm-library/MachineProvider";
+import React, { useState } from "react";
+import { MachineProvider, useMachineContext } from "./fsm-library/MachineProvider";
+import MovieComponent from "./components/MovieComponent.jsx";
+import SearchResults from "./components/SearchResults.jsx";
 
 const machine = {
-    name: 'Pokemon Fetching',
+    name: 'TV Show Tracker',
     initialState: 'idle',
     states: {
         idle: {
             transitions: {
-                fetch: 'loading',
+                search: 'loading',
+                clear: 'idle'
             },
         },
         loading: {
             transitions: {
-                resolve: 'data',
+                resolve: 'results',
                 reject: 'error',
             },
         },
-        data: {
+        results: {
             transitions: {
-                fetch: 'loading',
+                select: 'show',
+                search: 'loading',
+                clear: 'idle'
+            },
+        },
+        show: {
+            transitions: {
+                search: 'loading',
                 clear: 'idle'
             },
         },
         error: {
             transitions: {
-                fetch: 'loading',
+                'search': 'loading',
             },
         },
     },
@@ -32,83 +42,109 @@ const machine = {
 
 // eslint-disable-next-line no-undef
 if (process.env.NODE_ENV === 'test') {
-    window.fetch = () =>
-        Promise.resolve({
-            json: () => Promise.resolve({
-                results: [
-                    { name: "pokemon1", url: "https://pokeapi.co/api/v2/pokemon/1/" },
-                    { name: "pokemon2", url: "https://pokeapi.co/api/v2/pokemon/2/" }
-                ]
-            })
-        });
+    window.fetch = () => Promise.resolve({
+        json: () => Promise.resolve([
+            {
+                show: {
+                    id: 1,
+                    name: "Friends",
+                    summary: "A Classic TV show.",
+                    image: { medium: "https://static.tvmaze.com/uploads/images/medium_portrait/340/850450.jpg" },
+                    rating: { average: 8 },
+                    premiered: "1994-09-22"
+                }
+            },
+            {
+                show: {
+                    id: 2,
+                    name: "The Office",
+                    summary: "A mockumentary on a group of typical office workers.",
+                    image: { medium: "https://static.tvmaze.com/uploads/images/medium_portrait/340/850450.jpg" },
+                    rating: { average: 8.8 },
+                    premiered: "2005-03-24"
+                }
+            }
+        ])
+    });
 }
 
-
-const PokemonComponent = () => {
+const SearchComponent = () => {
     const [state, transition] = useMachineContext();
-    const [data, setData] = React.useState([]);
+    const [search, setSearch] = useState("");
+    const [results, setResults] = useState([]);
+    const [selectedShow, setSelectedShow] = useState(null);
 
-    const fetchData = async () => {
-        transition('fetch');
-        setTimeout(async () => {
-            try {
-                const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0');
-                const {results} = await res.json();
-                setData(results);
-                transition('resolve');
-            } catch (e) {
-                console.error(e);
-                transition('reject');
-            }
-        }, 2000);
+    const handleSearch = async () => {
+        if (search.length < 2) {
+            return;
+        }
+
+        transition("search");
+
+        try {
+            const response = await fetch(`http://api.tvmaze.com/search/shows?q=${search}`);
+            const data = await response.json();
+            setResults(data.map(d => d.show));
+            transition("resolve");
+        } catch (error) {
+            console.error(error);
+            transition("reject");
+        }
+    };
+
+    const handleShowSelect = (show) => {
+        setSelectedShow(show);
+        transition("select");
     }
 
-    const clearData = () => {
+    const handleClear = () => {
+        setSearch("");
+        setResults([]);
+        setSelectedShow(null);
         transition('clear');
     };
 
+    const handleChange = (e) => {
+        setSearch(e.target.value);
+    }
+
+    const handleSearchKeyPress = (e) => {
+        if (e.keyCode === 13) {
+            handleSearch().catch(error => {
+                console.error("An error occurred while searching shows", error);
+            });
+        }
+    };
+
     return (
-        <div>
-            <h1>Pokemon List</h1>
-            {state === "loading" && <div className="loader"></div>}
-            {state === "data" && <button onClick={clearData} className="clear-button">Clear Data</button>}
-            {state === "data" && data.map((pokemon, i) => (
-                <div key={i} className="pokemon">
-                    <h4>{pokemon.name}</h4>
-                    <a target="/_blank" href={pokemon.url}>{pokemon.url}</a>
-                </div>
-            ))}
-            {state === "error" && <div>Error fetching data</div>}
-            {state === "idle" && <button onClick={fetchData}>Fetch Pokemon</button>}
+        <div className='search-component'>
+            <input
+                value={search}
+                onChange={handleChange}
+                onKeyDown={handleSearchKeyPress}
+                placeholder="Search for TV Shows"
+            />
+            <button onClick={handleSearch} className="search-button">Search</button>
+            {state === "loading" && <p>Loading...</p>}
+            {state === "error" && <p>Error fetching data.</p>}
+            {state === "results" && <SearchResults data={results} onClick={handleShowSelect}/>}
+            {state === "show" && <MovieComponent show={selectedShow} />}
+            {(state === "results" || state === "show") && <button onClick={handleClear} className="clear-button">Clear</button>}
         </div>
     );
 };
 
-const ShowStateComponent = () => {
-    const [state, ] = useMachineContext();
+const StateIndicator = () => {
+    const [state] = useMachineContext();
 
-    return (
-        <div className={`status status-${state}`}>
-            Current State: {state}
-        </div>
-    );
-};
-
-const MainComponent = ({children}) => {
-    return (
-        <div className="main">
-            {children}
-        </div>
-    );
+    return <div className={`state-indicator ${state}`}><h2>{state.toUpperCase()}</h2></div>;
 };
 
 const App = () => {
     return (
         <MachineProvider machine={machine}>
-            <MainComponent>
-                <PokemonComponent />
-                <ShowStateComponent />
-            </MainComponent>
+            <StateIndicator />
+            <SearchComponent />
         </MachineProvider>
     );
 };
